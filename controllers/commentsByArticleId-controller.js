@@ -1,5 +1,5 @@
-const { getCommentsByArticleId } = require('../models/article-comments-model')
-const { getArticlesbyId } = require('../models/articles-model')
+const { getCommentsByArticleId } = require('../models/commentsByArticleId-model')
+const { getArticlesbyId } = require('../models/articlesById-model')
 
 const getCommentsController = (req, res, next) => {
     const {article_id} = req.params

@@ -2,9 +2,9 @@ const express = require('express')
 const app = express()
 const { getAllTopicsController } = require('./controllers/topics-controller')
 const { getEndpointsController } = require('./controllers/endpoints-controller')
-const { getArticlesController } = require('./controllers/articles-controller')
+const { getArticlesController } = require('./controllers/articlesById-controller')
 const { getAllArticlesController } = require('./controllers/all-articles-controller')
-const { getCommentsController } = require('./controllers/article-comments-controller')
+const { getCommentsController } = require('./controllers/commentsByArticleId-controller')
 
 app.use(express.json())
 
