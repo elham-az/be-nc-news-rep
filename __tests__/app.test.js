@@ -45,7 +45,7 @@ describe('app', () => {
             })
         })
     })
-    describe.only('GET /api/articles/:article_id', () => {
+    describe('GET /api/articles/:article_id', () => {
         it('return article object for a valid id', () => {
             return request(app)
                 .get('/api/articles/1')
@@ -77,8 +77,41 @@ describe('app', () => {
             .get('/api/articles/astring')
             .expect(400)
             .then(({body}) => {
-                expect(body.msg).toBe('Invalid article id')
+                expect(body.msg).toBe('Invalid input')
             })
         })
+    })
+    describe('GET /api/articles', () => {
+        it.only('status 200, return with an array of articles, each with the correct properties and ordered by created_at in descending order', () => {
+            return request(app)
+                .get('/api/articles')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.articles).toBeInstanceOf(Array)
+                    expect(body.articles).toBeSortedBy('created_at', { descending: true })
+                    body.articles.forEach((article) => {
+                        expect(article).toEqual(
+                            expect.objectContaining({
+                                author: expect.any(String),
+                                title: expect.any(String),
+                                article_id: expect.any(Number),
+                                topic: expect.any(String),
+                                created_at: expect.any(String),
+                                votes: expect.any(Number),
+                                article_img_url: expect.any(String),
+                                comment_count: expect.any(String)
+                            })
+                        )
+                    })
+                })
+        })
+        // it('status 404, when no articles and respond with message No articles found', () => {
+        //     return request(app)
+        //         .get('/api/articles')
+        //         .expect(404)
+        //         .then(({body}) => {
+        //             expect(body.msg).toBe('No articles found')
+        //         })
+        // })
     })
 })
