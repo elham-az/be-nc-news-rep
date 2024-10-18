@@ -115,7 +115,7 @@ describe('app', () => {
         // })
     })
     
-    describe.only('GET /api/articles/:article_id/comments', () => {
+    describe('GET /api/articles/:article_id/comments', () => {
         it('return comments for a valid article_id', () => {
             return request(app)
                 .get('/api/articles/1/comments')

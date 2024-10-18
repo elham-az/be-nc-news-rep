@@ -11,7 +11,7 @@
   },
   "GET /api/articles/:article_id": {
     "description": "serves an article by its id",
-    "queries": ["article_id"],
+    "queries": [],
     "exampleResponse": {
       "article": {
       "author": "butter_bridge",
@@ -52,5 +52,27 @@
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id/comments": {
+      "description": "Fetches all comments associated with a specific article, identified by its article_id. The article_id must be provided as a path parameter in the URL.",
+      "queries": [],
+      "example_response": {
+        "comments": [
+          {
+            "body": "What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.",
+            "votes": 16,
+            "author": "icellusedkars",
+            "article_id": 5,
+            "created_at": 1591682400000
+          },
+          {
+            "body": "I am 100% sure that we're not completely sure.",
+            "votes": 1,
+            "author": "butter_bridge",
+            "article_id": 5,
+            "created_at": 1606176480000
+          }
+        ]
+      }
   }
 }
