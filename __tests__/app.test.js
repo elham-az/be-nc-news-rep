@@ -82,7 +82,7 @@ describe('app', () => {
         })
     })
     describe('GET /api/articles', () => {
-        it.only('status 200, return with an array of articles, each with the correct properties and ordered by created_at in descending order', () => {
+        it('status 200, return with an array of articles, each with the correct properties and ordered by created_at in descending order', () => {
             return request(app)
                 .get('/api/articles')
                 .expect(200)
@@ -113,5 +113,53 @@ describe('app', () => {
         //             expect(body.msg).toBe('No articles found')
         //         })
         // })
+    })
+    
+    describe.only('GET /api/articles/:article_id/comments', () => {
+        it('return comments for a valid article_id', () => {
+            return request(app)
+                .get('/api/articles/1/comments')
+                .expect(200)
+                .then(({body}) => {
+                    console.log(body)
+                    expect(body.comments).toHaveLength(11)
+                    body.comments.forEach((comment) => {
+                        expect(comment).toEqual(
+                            expect.objectContaining({
+                            comment_id: expect.any(Number),
+                            votes: expect.any(Number),
+                            created_at: expect.any(String),
+                            author: expect.any(String),
+                            body: expect.any(String),
+                            article_id: 1
+                            })
+                        )
+                    })
+                })
+        })
+        it('status 200 if the article_id has no comments', () => {
+            return request(app)
+                .get('/api/articles/2/comments')
+                .expect(200)
+                .then(({body}) => {
+                    expect(body.msg).toBe('No comments found for this article')
+                })
+        })
+        it('status 404 if the article_id is non existent', () => {
+            return request(app)
+                .get('/api/articles/9999/comments')
+                .expect(404)
+                .then(({body}) => {
+                    expect(body.msg).toBe('Article non existent')
+                })
+        })
+        it('status 400 for an invalid article_id', () => {
+            return request(app)
+            .get('/api/articles/invalid/comments')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Invalid input')
+            })
+        })
     })
 })

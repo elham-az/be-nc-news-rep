@@ -1,4 +1,4 @@
-const { getArticles } = require('../models/articles-model')
+const { getArticlesbyId } = require('../models/articles-model')
 
 const getArticlesController = (req, res, next) => {
     const { article_id } = req.params
@@ -6,7 +6,7 @@ const getArticlesController = (req, res, next) => {
     // if (isNaN(Number(article_id))) {
     //     return res.status(400).send({msg: 'Invalid article id'})
     // }
-    getArticles(article_id).then((article)=> {
+    getArticlesbyId(article_id).then((article)=> {
         
         res.status(200).send({article})
     })
