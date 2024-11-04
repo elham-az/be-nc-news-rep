@@ -21,42 +21,58 @@
       "topic": "mitch",
       "created_at": "2020-07-09T20:11:00.000Z",
       "votes": 100,
-      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      "comment_count": "11"
       }
     }
-  },
+  }, 
   "GET /api/articles": {
-    "description": "Fetches all articles, sorted by date in descending order. Includes a comment count for each article.",
-    "queries": [],
-        "exampleResponse": {
-      "articles": [
-        {
-          "author": "butter_bridge",
-          "title": "Living in the shadow of a great man",
-          "article_id": 1,
-          "topic": "mitch",
-          "created_at": "2020-07-09T20:11:00.000Z",
-          "votes": 100,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg",
-          "comment_count": "13"
-        },
-        {
-          "author": "icellusedkars",
-          "title": "The Rise Of Thinking Machines",
-                    "article_id": 2,
-          "topic": "tech",
-          "created_at": "2020-07-09T20:11:00.000Z",
-          "votes": 56,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg",
-          "comment_count": "10"
-        }
-      ]
+    "description": "Retrieves a list of articles. Optionally filters by topic and sorts by a specified column and order.",
+    "queries": [
+      {
+        "name": "topic",
+        "description": "Filters articles by the specified topic (optional)."
+      },
+      {
+        "name": "sort_by",
+        "description": "Column to sort articles by. Must be one of: author, title, article_id, topic, created_at, votes, comment_count. Defaults to 'created_at'.",
+        "allowedValues": ["author", "title", "article_id", "topic", "created_at", "votes", "comment_count"]
+      },
+      {
+        "name": "order",
+        "description": "Order of sorting, either ascending or descending. Must be 'asc' or 'desc'. Defaults to 'desc'.",
+        "allowedValues": ["asc", "desc"]
+      }
+    ],
+    "exampleResponse": {
+        "articles": [
+          {
+            "author": "butter_bridge",
+            "title": "Living in the shadow of a great man",
+            "article_id": 1,
+            "topic": "mitch",
+            "created_at": "2020-07-09T20:11:00.000Z",
+            "votes": 100,
+            "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg",
+            "comment_count": "13"
+          },
+          {
+            "author": "icellusedkars",
+            "title": "The Rise Of Thinking Machines",
+            "article_id": 2,
+            "topic": "tech",
+            "created_at": "2020-07-09T20:11:00.000Z",
+            "votes": 56,
+            "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg",
+            "comment_count": "10"
+          }
+        ]
     }
   },
   "GET /api/articles/:article_id/comments": {
       "description": "Fetches all comments associated with a specific article, identified by its article_id. The article_id must be provided as a path parameter in the URL.",
       "queries": [],
-      "example_response": {
+      "exampleResponse": {
         "comments": [
           {
             "body": "What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.",
@@ -74,5 +90,59 @@
           }
         ]
       }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Adds a new comment to a specific article by article_id",
+    "requestBody": {
+        "username": "string",
+        "body": "string"
+    },
+    "exampleResponse": {
+        "comment": {
+            "comment_id": 2,
+            "article_id": 1,
+            "author": "username",
+            "body": "Interesting perspective!",
+            "created_at": "2023-01-01T00:00:00.000Z"
+        }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Updates the vote count of a specific article by article_id",
+    "requestBody": {
+        "inc_votes": "An integer value indicating the increment (positive or negative) to be applied to the article's vote count"
+    },
+    "exampleRequestBody": {
+        "inc_votes": 1
+    },
+    "exampleResponse": {
+        "article": {
+          "title": "Living in the shadow of a great man",
+          "topic": "mitch",
+          "author": "butter_bridge",
+          "body": "I find this existence challenging",
+          "created_at": 1594329060000,
+          "votes": 101,
+          "article_img_url":
+            "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+        }
+    }
+  },
+  "GET /api/users": {
+    "description": "Retrieves an array of all users with username, name, and avatar_url properties.",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "johndoe",
+          "name": "John Doe",
+          "avatar_url": "https://example.com/avatar/johndoe.png"
+        },
+        {
+          "username": "janedoe",
+          "name": "Jane Doe",
+          "avatar_url": "https://example.com/avatar/janedoe.png"
+        }
+      ]
+    }
   }
 }

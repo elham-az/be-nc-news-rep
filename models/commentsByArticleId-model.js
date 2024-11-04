@@ -16,4 +16,23 @@ const getCommentsByArticleId = (article_id) => {
     })
 }
 
-module.exports = { getCommentsByArticleId }
+const postCommentByArticleId = (article_id, username, body) => {
+    return db.query(
+        `INSERT INTO comments (article_id, author, body)
+         VALUES ($1, $2, $3)
+         RETURNING *;`,
+        [article_id, username, body]
+    )
+    .then(({ rows }) => {
+        return rows[0]
+    })
+    .catch((err) => {
+        if (err.code === '23503') {
+            return Promise.reject({ status: 404, msg: 'Article or user not found' })
+        }
+        throw err
+    });
+};
+
+module.exports = { getCommentsByArticleId, postCommentByArticleId }
+

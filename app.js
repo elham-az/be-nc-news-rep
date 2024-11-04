@@ -2,9 +2,10 @@ const express = require('express')
 const app = express()
 const { getAllTopicsController } = require('./controllers/topics-controller')
 const { getEndpointsController } = require('./controllers/endpoints-controller')
-const { getArticlesController } = require('./controllers/articlesById-controller')
+const { getArticlesController,patchArticleById } = require('./controllers/articlesById-controller')
 const { getAllArticlesController } = require('./controllers/all-articles-controller')
-const { getCommentsController } = require('./controllers/commentsByArticleId-controller')
+const { getCommentsController, postCommentController } = require('./controllers/commentsByArticleId-controller')
+const { getAllUsers } = require('./controllers/users-controller.js')
 
 app.use(express.json())
 
@@ -17,6 +18,12 @@ app.get('/api/articles/:article_id', getArticlesController)
 app.get('/api/articles', getAllArticlesController)
 
 app.get('/api/articles/:article_id/comments', getCommentsController)
+
+app.post('/api/articles/:article_id/comments', postCommentController)
+
+app.patch('/api/articles/:article_id', patchArticleById)
+
+app.get('/api/users', getAllUsers)
 
 app.use((err, req, res, next) => {
     if (err.status) {
