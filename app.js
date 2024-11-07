@@ -4,7 +4,7 @@ const { getAllTopicsController } = require('./controllers/topics-controller')
 const { getEndpointsController } = require('./controllers/endpoints-controller')
 const { getArticlesController,patchArticleById } = require('./controllers/articlesById-controller')
 const { getAllArticlesController } = require('./controllers/all-articles-controller')
-const { getCommentsController, postCommentController } = require('./controllers/commentsByArticleId-controller')
+const { getCommentsController, postCommentController, deleteCommentController } = require('./controllers/commentsByArticleId-controller')
 const { getAllUsers } = require('./controllers/users-controller.js')
 const cors = require('cors');
 
@@ -27,6 +27,8 @@ app.post('/api/articles/:article_id/comments', postCommentController)
 app.patch('/api/articles/:article_id', patchArticleById)
 
 app.get('/api/users', getAllUsers)
+
+app.delete('/api/comments/:comment_id', deleteCommentController)
 
 app.use((err, req, res, next) => {
     if (err.status) {

@@ -144,5 +144,16 @@
         }
       ]
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes a comment by its comment_id. Responds with status 204 and no content.",
+    "example_request": {
+      "method": "DELETE",
+      "url": "/api/comments/1"
+    },
+    "example_response": {
+      "status": 204,
+      "content": null
+    }
   }
 }

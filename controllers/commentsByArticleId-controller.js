@@ -1,4 +1,4 @@
-const { getCommentsByArticleId, postCommentByArticleId } = require('../models/commentsByArticleId-model')
+const { getCommentsByArticleId, postCommentByArticleId, deleteCommentById } = require('../models/commentsByArticleId-model')
 const { getArticlesbyId } = require('../models/articlesById-model')
 
 const getCommentsController = (req, res, next) => {
@@ -34,4 +34,20 @@ const postCommentController = (req, res, next) => {
         })
 }
 
-module.exports = { getCommentsController, postCommentController }
+const deleteCommentController = (req, res, next) => {
+    const { comment_id } = req.params;
+
+    deleteCommentById(comment_id)
+        .then(() => {
+            res.status(204).send()
+        })
+        .catch((err) => {
+            if (err.code === '22P02') {
+                res.status(400).send({ msg: "Invalid comment_id format" })
+            } else {
+                next(err)
+            }
+        })
+}
+
+module.exports = { getCommentsController, postCommentController, deleteCommentController }

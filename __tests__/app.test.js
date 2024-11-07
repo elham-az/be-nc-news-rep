@@ -66,7 +66,7 @@ describe('app', () => {
                     )
                 })
         })
-        it('status 404 responds with error message', () => {
+        it('status 404 responds with error message when non existent article id is passed', () => {
             return request(app)
             .get('/api/articles/9999')
             .expect(404)
@@ -74,7 +74,7 @@ describe('app', () => {
                 expect(body.msg).toBe('Article non existent')
             })
         })
-        it('status 404 responds with error message', () => {
+        it('status 404 responds with error message when invalid input', () => {
             return request(app)
             .get('/api/articles/astring')
             .expect(400)
@@ -350,6 +350,29 @@ describe('app', () => {
                 .expect(404)
                 .then(({ body }) => {
                     expect(body.error).toBe("No articles found for the specified topic.")
+                })
+        })
+    })
+    describe('DELETE /api/comments/:comment_id', () => {
+        it('should delete the comment by comment_id and return status 204', () => {
+            return request(app)
+                .delete('/api/comments/1')
+                .expect(204)
+        })
+        it('responds with "Comment not found" when comment_id does not exist and return status 404', () => {
+            return request(app)
+                .delete('/api/comments/9999')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Comment not found')
+                })
+        })
+        it('responds with "Invalid comment_id format" for invalid comment_id and returns status 400', () => {
+            return request(app)
+                .delete('/api/comments/invalidId')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Invalid comment_id format')
                 })
         })
     })
